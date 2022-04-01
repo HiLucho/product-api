@@ -1,6 +1,17 @@
 # PRODUCT API
 ____________________
 
+## Disclaimer:
+I decided to do it with Hibernate and JPA because I am more familiar with using mySql, therefore I like relational databases but it was the fastest thing I implemented.
+
+I used clean architecture as pattern design.
+
+Jacoco report for coverage.
+
+Mockito
+
+Junit 5
+____________________
 This is a service to persist and retrieve products.
 
 Any question or comment write me on slack or by email at __l.avila@globant.com__
