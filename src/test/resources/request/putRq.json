@@ -1,0 +1,8 @@
+{
+  "sku": "AAA-1000010",
+  "name":"newName",
+  "brand":"newBrand",
+  "size": "newSize",
+  "price": 99999.00,
+  "principalImage": "http://new-image.com"
+}

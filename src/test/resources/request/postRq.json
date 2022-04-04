@@ -1,0 +1,9 @@
+{
+  "sku": "AAA-1000010",
+  "name":"nametxt",
+  "brand":"brandtxt",
+  "size": "sizetxt",
+  "price": 1299.00,
+  "principalImage": "http://somedata.com"
+
+}

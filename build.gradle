@@ -1,0 +1,86 @@
+plugins {
+    id 'org.springframework.boot' version '2.6.5'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'jacoco'
+}
+
+apply plugin: 'jacoco'
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "org.springframework.boot:spring-boot-starter-validation"
+    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'org.projectlombok:lombok:1.18.20'
+    implementation 'junit:junit:4.13.1'
+    compileOnly 'org.projectlombok:lombok'
+    runtimeOnly 'mysql:mysql-connector-java'
+    annotationProcessor 'org.projectlombok:lombok'
+    // TEST
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    testImplementation 'org.assertj:assertj-core:3.22.0'
+    testImplementation 'com.h2database:h2:2.1.210'
+
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+
+
+test {
+    testLogging {
+        exceptionFormat "full"
+        events "passed", "failed", "skipped"
+    }
+    configure {
+        systemProperties = ['spring.profiles.active': hasProperty('SPRING_PROFILE') ? SPRING_PROFILE : System.getenv('SPRING_PROFILE')]
+    }
+    finalizedBy jacocoTestReport
+}
+tasks.withType(Test) {
+    testLogging {
+        exceptionFormat "full"
+        events "passed", "failed", "skipped"
+    }
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+    }
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    '**/entity/**',
+                    '**/model/**',
+                    '**/handler/**',
+                    '**/ProductApplication.class'
+            ])
+        }))
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.7"
+}
